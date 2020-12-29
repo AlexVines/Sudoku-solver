@@ -1,4 +1,6 @@
 import numpy as np
+import sudoku_gui
+import time
 
 grid = [[5, 3, 0,   0, 7, 0,    0, 0, 0],
         [6, 0, 0,   1, 9, 5,    0, 0, 0],
@@ -55,18 +57,20 @@ def print_board(bo):
             else:
                 print(str(grid[i][j]) + ' ', end="")
 
-def solver():
-    global grid
+
+def solver(grid):
     for y in range(9):
         for x in range(9):
             if grid[y][x] == 0:
                 for n in range(1, 10):
                     if possible(y, x, n):
                         grid[y][x] = n
-                        solver()
+                        solver(grid)
                         grid[y][x] = 0
+
                 return
     print_board(grid)
 
-solver()
+solver(grid)
+
 
