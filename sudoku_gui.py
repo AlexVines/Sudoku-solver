@@ -1,5 +1,4 @@
 import pygame
-import numpy as np
 import solver
 
 pygame.init()
@@ -72,11 +71,17 @@ def draw_game_window():
     pygame.display.update()
 
 
-def draw_line(x, y, width, height):
-    pygame.draw.rect(window, LINE_COL, (x, y, width, height))
+def draw_game_grid(grid):
+    for i in range(9):
+        for j in range(9):
+            cube[i][j].val = grid[i][j]
+    draw_game_window()
 
 
 def draw_grid():
+    def draw_line(x, y, width, height):
+        pygame.draw.rect(window, LINE_COL, (x, y, width, height))
+
     for i in range(10):
         if i % 3 != 0:
             draw_line(i * window_width//9, 0, line_width, window_height)
@@ -84,6 +89,7 @@ def draw_grid():
         else:
             draw_line(i * window_width // 9, 0, line_width+2, window_height)
             draw_line(0, i * window_height // 9, window_height, line_width + 2)
+
 
 
 def clear_screen():
@@ -96,7 +102,7 @@ def get_grid():
     nums = []
     for i in range(9):
         nums.append([cube[i][j].val for j in range(9)])
-    print(np.matrix(nums))
+    return nums
 
 
 def main():
@@ -116,9 +122,12 @@ def main():
                     i = pos[0] // 50
                     j = pos[1] // 50
                     cube[i][j].selected = True
-                
+
                 elif solve.is_over(pos):
                     get_grid()
+                    draw_game_grid(solver.grid)
+
+
 
                 elif clear.is_over(pos):
                     clear_screen()
